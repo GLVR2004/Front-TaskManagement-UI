@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { TaskDto, CreateTaskRequest } from '../models/interfaces';
+import { TaskDto, CreateTaskRequest } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private apiUrl = 'https://localhost:5005/api/task';
-  constructor(private client: HttpClient) {}
+  private apiUrl = 'http://localhost:5005/api/tasks';
+
+  constructor(private http: HttpClient) {}
 
   getTasks(): Observable<TaskDto[]> {
-    return this.client.get<TaskDto[]>(this.apiUrl);
+    return this.http.get<TaskDto[]>(this.apiUrl);
   }
 
   createTask(request: CreateTaskRequest): Observable<TaskDto> {
-    return this.client.post<TaskDto>(this.apiUrl, request);
+    return this.http.post<TaskDto>(this.apiUrl, request);
   }
 
   completeTask(id: string): Observable<void> {
-    return this.client.patch<void>(`${this.apiUrl}/${id}/complete`, {});
+    return this.http.patch<void>(`${this.apiUrl}/${id}/complete`, {});
   }
 }
